@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>INVOICE #KJ004 | dzynsbysoham</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #121212;
+            --text: #e0e0e0;
+            --accent: #ccff00; /* Neon Lime */
+            --accent-glow: rgba(204, 255, 0, 0.4);
+            --border: #333;
+            --font-main: 'Space Grotesk', sans-serif;
+            --font-display: 'Syne', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: none; /* Desktop cursor default */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- CUSTOM CURSOR (Desktop Only) --- */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+            display: block;
+        }
+        .cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent);
+            opacity: 0.8;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .brand h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem); /* Fluid font size */
+            text-transform: uppercase;
+            line-height: 0.9;
+            color: var(--accent);
+        }
+
+        .brand span {
+            display: block;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        .invoice-meta {
+            text-align: right;
+        }
+
+        .invoice-meta .tag {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 0.2rem 0.8rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transform: rotate(-2deg);
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- CLIENT SECTION --- */
+        .client-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        .client-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent);
+        }
+
+        .info-block.right-align {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .info-block h3 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            color: #fff;
+        }
+        .info-block p {
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        /* --- PROJECTS GRID --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+            /* Full color always active */
+        }
+
+        .card-content {
+            padding: 1.2rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            color: #fff;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #333;
+        }
+
+        .price-tag {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* --- SUMMARY SECTION --- */
+        .summary-section {
+            background: var(--surface);
+            border: 2px solid var(--accent);
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .total-label {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .total-amount {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* --- PAYMENT SECTION --- */
+        .payment-section {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+        }
+
+        .qr-code-container {
+            background: #fff;
+            padding: 0.8rem;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            display: block;
+        }
+
+        .payment-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .btn-download {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            cursor: pointer; /* Ensure pointer on desktop */
+        }
+
+        /* --- MARQUEE --- */
+        .marquee-container {
+            position: fixed;
+            bottom: 1rem;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.05;
+        }
+
+        .marquee-text {
+            white-space: nowrap;
+            font-family: var(--font-display);
+            font-size: 6rem;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* =========================================
+           MOBILE RESPONSIVE OVERRIDES 
+           ========================================= */
+        @media (max-width: 768px) {
+            /* 1. Disable Custom Cursor for Touch */
+            .cursor { display: none !important; }
+            * { cursor: auto !important; }
+
+            /* 2. Layout Adjustments */
+            .container {
+                padding: 1.5rem;
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .invoice-meta {
+                text-align: left;
+                width: 100%;
+                padding-top: 1rem;
+                border-top: 1px solid #222;
+            }
+
+            /* 3. Stack Client Section */
+            .client-section {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem;
+            }
+
+            .info-block.right-align {
+                text-align: left; /* Reset alignment */
+                align-items: flex-start;
+            }
+
+            /* 4. Project Grid - Full Width Cards */
+            .projects-grid {
+                grid-template-columns: 1fr; /* Force 1 column */
+                gap: 2rem;
+            }
+
+            /* 5. Summary Section */
+            .summary-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .total-amount {
+                font-size: 3rem; /* Safe size for mobile */
+            }
+
+            /* 6. Payment Section */
+            .payment-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .btn-download {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* 7. Marquee sizing */
+            .marquee-text {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor"></div>
+    <div class="bg-grid"></div>
+
+    <div class="marquee-container">
+        <div class="marquee-text">dzynsbysoham I dzynsbysoham I</div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>dzynsby<br>soham</h1>
+                <span>CREATIVE SERVICES</span>
+            </div>
+            <div class="invoice-meta">
+                <div class="tag">#KJ004</div>
+                <p>November 30, 2025</p>
+                <p>Status: <span style="color:var(--accent)">PENDING</span></p>
+            </div>
+        </header>
+
+        <section class="client-section">
+            <div class="info-block">
+                <h2>Billed To</h2>
+                <h3>Keshav Jindal</h3>
+                <p>Cyrpto Trading & Finance Thumbnails</p>
+            </div>
+            <div class="info-block right-align">
+                <h2>Project Scope</h2>
+                <h3>4 Thumbnails</h3>
+                <p>November 2025 Cycle</p>
+            </div>
+        </section>
+
+        <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #fff;">Work Delivered</h2>
+        <div class="projects-grid">
+            
+            <article class="card">
+                <img src="Images/Thumbnail1.jpg" alt="Work" class="card-image">
+                <div class="card-content">
+                    <div class="card-title">Big rally or fake hype</div>
+                    <div class="card-meta">
+                        <span>Thumbnail Design</span>
+                        <span class="price-tag">₹350</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="Images/Thumbnail2.jpg" alt="Work" class="card-image">
+                <div class="card-content">
+                    <div class="card-title">Crypto predictions/news</div>
+                    <div class="card-meta">
+                        <span>Thumbnail Design</span>
+                        <span class="price-tag">₹350</span>
+                    </div>
+                </div>
+            </article>
+
+<article class="card">
+                <img src="Images/Thumbnail3.jpg" alt="Work" class="card-image">
+                <div class="card-content">
+                    <div class="card-title">Don't be late buy Crypto</div>
+                    <div class="card-meta">
+                        <span>Thumbnail Design</span>
+                        <span class="price-tag">₹350</span>
+                    </div>
+                </div>
+            </article>
+
+<article class="card">
+                <img src="Images/Thumbnail4.jpg" alt="Work" class="card-image">
+                <div class="card-content">
+                    <div class="card-title">Select Altcoins like a pro</div>
+                    <div class="card-meta">
+                        <span>Thumbnail Design</span>
+                        <span class="price-tag">₹350</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="summary-section">
+            <div class="summary-text">
+                <div class="total-label">Total Due</div>
+                <div style="color: #888; font-size: 1.1rem; margin-top: 0.5rem;">4 Items @ ₹350</div>
+            </div>
+            <div class="total-amount">₹1,400</div>
+        </div>
+
+        <div class="payment-section">
+            <div class="qr-code-container">
+                <img src="Images/pay.png" alt="UPI QR" class="qr-code">
+            </div>
+            <div class="payment-info">
+                <h3>Scan to Pay</h3>
+                <p style="color:#aaa;">Use any UPI app to complete payment.</p>
+                <button class="btn-download" onclick="window.print()">Download Invoice</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 dzynsbysoham. Thank you for business.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Only run custom cursor on non-touch devices
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursor = document.querySelector('.cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            document.querySelectorAll('a, button, .card').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target); // Stop observing once revealed
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card, .summary-section, .payment-section, .client-section').forEach((el, index) => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease-out ${index * 0.05}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
